@@ -1,6 +1,6 @@
 use std::fmt::Display;
 
-#[derive(PartialEq, Clone, Copy)]
+#[derive(PartialEq, Eq, Clone, Copy)]
 pub enum State {
     X = 1,
     O = -1,
@@ -16,4 +16,3 @@ impl Display for State {
         }
     }
 }
-

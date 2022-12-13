@@ -2,7 +2,7 @@ use super::state::State;
 
 type Ground = [[State; 3]; 3];
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, PartialEq)]
 pub struct Env {
     ground: Ground,
     last_played_state: State,
@@ -35,6 +35,12 @@ impl Env {
             ground: ret,
             last_played_state: env.last_played_state,
         }
+    }
+
+    /// Sets the env of this [`Env`].
+    pub fn set_env(&mut self, env: &Env) {
+        self.ground = env.ground;
+        self.last_played_state = env.last_played_state;
     }
 
     pub fn eval_winner(&self) -> Option<&State> {
@@ -113,22 +119,25 @@ impl Env {
     }
 
     pub fn insert_state_at(&mut self, x: usize, y: usize, s: State) {
-        self.ground[x][y] = s;
         self.last_played_state = s;
-        self.eval_winner();
+        self.ground[x][y] = s;
     }
 
     pub fn play(&mut self, x: usize, y: usize) {
         if self.last_played_state == State::O {
-            self.last_played_state = State::X;
-            self.ground[x][y] = self.last_played_state.clone();
+            self.insert_state_at(x, y, State::X);
         } else if self.last_played_state == State::X {
-            self.last_played_state = State::O;
-            self.ground[x][y] = self.last_played_state.clone();
+            self.insert_state_at(x, y, State::O);
+        } else {
+            self.insert_state_at(x, y, State::X);
         }
     }
 
     pub fn ground(&self) -> &Ground {
         &self.ground
+    }
+
+    pub fn last_played_state(&self) -> &State {
+        &self.last_played_state
     }
 }

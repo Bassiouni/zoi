@@ -15,4 +15,8 @@ fn main() {
 
     let mut gt = GameTree::from(&env);
     gt.gen_tree();
+    gt.eval_score();
+    gt.update_env(&mut env);
+
+    println!();
 }

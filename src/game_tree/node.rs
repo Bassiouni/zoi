@@ -1,10 +1,9 @@
-use std::i8;
-
 use crate::env::{Env, State};
 
+#[derive(Clone)]
 pub struct Node {
     env: Env,
-    score: u8,
+    score: i64,
     children: Vec<Self>,
 }
 
@@ -20,7 +19,7 @@ impl Node {
     pub fn from(env: &Env) -> Self {
         Self {
             score: 0,
-            env: Env::from(&env),
+            env: Env::from(env),
             children: vec![],
         }
     }
@@ -44,7 +43,7 @@ impl Node {
 
         for c in self.children.iter_mut() {
             if let Some(winner) = c.env.eval_winner() {
-                c.score = (*winner) as u8;
+                c.score = (*winner) as i64;
             } else {
                 c.construct_children();
             }
@@ -55,15 +54,19 @@ impl Node {
         &self.env
     }
 
-    pub fn score(&self) -> &u8 {
+    pub fn score(&self) -> &i64 {
         &self.score
     }
 
-    pub fn set_score(&mut self, score: u8) {
+    pub fn set_score(&mut self, score: i64) {
         self.score = score;
     }
 
     pub fn children(&self) -> &Vec<Self> {
         &self.children
+    }
+
+    pub fn children_mut(&mut self) -> &mut Vec<Self> {
+        &mut self.children
     }
 }
