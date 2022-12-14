@@ -61,12 +61,14 @@ impl GameTree {
         }
         self.head = it;
 
-        let new_move = self
-            .head
-            .children()
-            .iter()
-            .min_by_key(|p| p.score())
-            .unwrap();
-        env.set_env(new_move.env());
+        if !env.is_full() {
+            let new_move = self
+                .head
+                .children()
+                .iter()
+                .min_by_key(|p| p.score())
+                .unwrap();
+            env.set_env(new_move.env());
+        }
     }
 }

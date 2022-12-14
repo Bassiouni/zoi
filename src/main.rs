@@ -73,6 +73,7 @@ fn game_loop() -> ! {
 
         if env.is_full() {
             println!("Tie!");
+            exit(0);
         }
 
         sleep(Duration::from_millis(500));
@@ -92,10 +93,15 @@ fn parse_input_to_i8() -> i8 {
     let mut buf = String::new();
     if let Err(err) = io::stdin().read_line(&mut buf) {
         println!("error {err}");
-        panic!("Failed to parse input!");
-    } else {
-        buf.pop();
-        let n = buf.parse::<i8>().unwrap();
-        return n;
-    };
+        exit(2);
+    }
+
+    buf.pop();
+    match buf.parse::<i8>() {
+        Ok(res) => res,
+        Err(err) => {
+            println!("error {err}");
+            exit(2);
+        }
+    }
 }
