@@ -1,14 +1,14 @@
 mod env;
 mod game_tree;
 
-use std::env::consts::OS;
-use std::process::exit;
-use std::thread::sleep;
-use std::time::Duration;
-use std::{io, process::Command};
-
 use env::Env;
 use game_tree::GameTree;
+
+use std::env::consts::OS;
+use std::io;
+use std::process::{exit, Command};
+use std::thread::sleep;
+use std::time::Duration;
 
 fn main() {
     println!("Welcome to Tic Tac Toe Game!");
