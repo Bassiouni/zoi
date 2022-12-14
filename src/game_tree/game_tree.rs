@@ -1,6 +1,9 @@
+extern crate traversal;
+
+use traversal::bft;
+
 use super::Node;
 use crate::env::Env;
-use std::collections::VecDeque;
 
 pub struct GameTree {
     head: Node,
@@ -38,7 +41,6 @@ impl GameTree {
             Self::dfs_traverse_tree(n);
 
             n.set_score(Self::calc_score_value(n));
-            println!("{}", n.score());
         }
     }
 
@@ -55,25 +57,21 @@ impl GameTree {
     }
 
     pub fn update_env(&mut self, env: &mut Env) {
-        let mut deq: VecDeque<&Node> = VecDeque::new();
-        deq.push_back(&self.head);
-        'l: loop {
-            let front = *deq.front().unwrap();
-
-            if front.env() == env {
-                self.head = front.clone();
-                break 'l;
+        let tree_iter = bft(&self.head, |n| n.children().iter());
+        let mut it: Node = Node::new();
+        for item in tree_iter {
+            if item.1.env() == env {
+                it = item.1.to_owned();
             }
-            
-            if deq.len() == 1 {
-                for i in front.children() {
-                    deq.push_back(i);
-                }
-            }
-            
-            deq.pop_front();
         }
-        let new_move = self.head.children().iter().min_by_key(|p| p.score()).unwrap();
+        self.head = it;
+
+        let new_move = self
+            .head
+            .children()
+            .iter()
+            .min_by_key(|p| p.score())
+            .unwrap();
         env.set_env(new_move.env());
     }
 }

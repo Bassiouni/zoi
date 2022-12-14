@@ -108,13 +108,19 @@ impl Env {
     }
 
     pub fn print_board(&self) {
+        let mut c = 0;
         println!("-------------");
         for i in self.ground.iter() {
-            for j in i.iter() {
-                print!("| {} ", j);
+            for j in i.iter().enumerate() {
+                if *j.1 == State::Empty {
+                    print!("| {} ", j.0 + 1 + c);
+                } else {
+                    print!("| {} ", j.1);
+                }
             }
             println!("|");
             println!("-------------");
+            c += 3;
         }
     }
 
@@ -123,7 +129,7 @@ impl Env {
         self.ground[x][y] = s;
     }
 
-    pub fn play(&mut self, x: usize, y: usize) {
+    pub fn play_at(&mut self, x: usize, y: usize) {
         if self.last_played_state == State::O {
             self.insert_state_at(x, y, State::X);
         } else if self.last_played_state == State::X {
@@ -133,11 +139,37 @@ impl Env {
         }
     }
 
+    pub fn play(&mut self, n: i8) {
+        match n {
+            1 => self.play_at(0, 0),
+            2 => self.play_at(0, 1),
+            3 => self.play_at(0, 2),
+            4 => self.play_at(1, 0),
+            5 => self.play_at(1, 1),
+            6 => self.play_at(1, 2),
+            7 => self.play_at(2, 0),
+            8 => self.play_at(2, 1),
+            9 => self.play_at(2, 2),
+            _ => {}
+        }
+    }
+
     pub fn ground(&self) -> &Ground {
         &self.ground
     }
 
     pub fn last_played_state(&self) -> &State {
         &self.last_played_state
+    }
+
+    pub fn is_full(&self) -> bool {
+        for i in self.ground.iter() {
+            for j in i {
+                if *j == State::Empty {
+                    return false;
+                }
+            }
+        }
+        true
     }
 }

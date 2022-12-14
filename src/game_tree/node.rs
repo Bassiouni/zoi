@@ -33,7 +33,7 @@ impl Node {
             while j < 3 {
                 if ground[i][j] == State::Empty {
                     let mut new_env = Env::from(&self.env);
-                    new_env.play(i, j);
+                    new_env.play_at(i, j);
                     self.children.push(Self::from(&new_env));
                 }
                 j += 1;
