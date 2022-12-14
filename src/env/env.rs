@@ -158,10 +158,6 @@ impl Env {
         &self.ground
     }
 
-    pub fn last_played_state(&self) -> &State {
-        &self.last_played_state
-    }
-
     pub fn is_full(&self) -> bool {
         for i in self.ground.iter() {
             for j in i {

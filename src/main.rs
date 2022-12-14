@@ -16,23 +16,23 @@ fn main() {
     println!("2. Quit");
     print!(">> ");
     #[allow(unused_must_use)]
-    io::Write::flush(&mut io::stdout());
+    io::Write::flush(&mut io::stdout()).unwrap();
 
     let n = parse_input_to_i8();
     match n {
-        1 => gameloop(),
+        1 => game_loop(),
         2 => exit(0),
         _ => exit(-1),
     };
 }
 
-fn gameloop() {
+fn game_loop() -> ! {
     let mut env = Env::new();
     clear_console();
 
     env.print_board();
     print!("select block to play at -> ");
-    io::Write::flush(&mut io::stdout());
+    io::Write::flush(&mut io::stdout()).unwrap();
 
     let n = parse_input_to_i8();
     sleep(Duration::from_millis(500));
@@ -59,7 +59,7 @@ fn gameloop() {
             println!("Tie!");
         }
         print!("select block to play at -> ");
-        io::Write::flush(&mut io::stdout());
+        io::Write::flush(&mut io::stdout()).unwrap();
 
         let n = parse_input_to_i8();
         env.play(n);

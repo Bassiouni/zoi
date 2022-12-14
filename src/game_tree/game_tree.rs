@@ -10,11 +10,6 @@ pub struct GameTree {
 }
 
 impl GameTree {
-    /// Creates a new [`GameTree`].
-    pub fn new() -> Self {
-        GameTree { head: Node::new() }
-    }
-
     /// Generate a new [`GameTree`] from existing [`Env`]
     pub fn from(env: &Env) -> Self {
         GameTree {
